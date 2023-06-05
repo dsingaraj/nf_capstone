@@ -7,7 +7,7 @@ resource "aws_vpc" "myvpc" {
 }
 
 resource "aws_s3_bucket" "example" {
-  bucket = "my-tf-test-bucket"
+  bucket = "neufische-sample-test-bucket"
 
   tags = {
     Name        = "My bucket"
