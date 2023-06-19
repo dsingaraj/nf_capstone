@@ -20,6 +20,15 @@ resource "aws_s3_bucket" "qa" {
   }
 }
 
+resource "aws_s3_bucket" "staging" {
+  bucket = "neufische-staging-bucket"
+
+  tags = {
+    Name        = "neufische-staging-bucket"
+    Environment = "QA"
+  }
+}
+
 resource "aws_s3_bucket" "prod" {
   bucket = "neufische-prod-bucket"
 
