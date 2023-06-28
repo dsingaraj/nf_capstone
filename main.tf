@@ -46,3 +46,12 @@ resource "aws_s3_bucket" "prod" {
     Environment = "QA"
   }
 }
+
+resource "aws_s3_bucket" "dryrun" {
+  bucket = "neufische-dryrun-bucket"
+
+  tags = {
+    Name        = "neufische-dryrun-bucket"
+    Environment = "QA"
+  }
+}
