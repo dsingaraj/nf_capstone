@@ -29,6 +29,15 @@ resource "aws_s3_bucket" "staging" {
   }
 }
 
+resource "aws_s3_bucket" "pre-prod" {
+  bucket = "neufische-pre-prod-bucket"
+
+  tags = {
+    Name        = "neufische-qa-bucket"
+    Environment = "QA"
+  }
+}
+
 resource "aws_s3_bucket" "prod" {
   bucket = "neufische-prod-bucket"
 
