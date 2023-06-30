@@ -55,3 +55,16 @@ resource "aws_s3_bucket" "dryrun" {
     Environment = "QA"
   }
 }
+
+# Instance Configuration
+resource "aws_instance" "deham6ec2"{
+    ami = "ami-0b9ecf71fe947bbdd"
+    instance_type = "t3.micro"
+    key_name = "deham630062023"
+    vpc_security_group_ids = "sg-0668745a1e96b9e55"
+    subnet_id = "subnet-05527afe89ba4d0ee"
+
+    tags = {
+        Name = "deham6ec2"
+    }
+}
