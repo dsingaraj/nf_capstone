@@ -70,14 +70,14 @@ resource "aws_instance" "deham6ec2"{
     }
 }*/
 
-resource "aws_instance" "deham6demos"{
-    ami = "ami-0fcc042fb36f907a8"
+resource "aws_instance" "deham6demos1"{
+    ami = "ami-012e877411b53f3bd"
     instance_type = "t2.micro"
     key_name = "deham630062023"
     vpc_security_group_ids = ["sg-0668745a1e96b9e55"]
     subnet_id = "subnet-05527afe89ba4d0ee"
 
     tags = {
-        Name = "deham6demos"
+        Name = "deham6demos10072023"
     }
 }
