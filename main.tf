@@ -11,6 +11,15 @@ resource "aws_s3_bucket" "development" {
   }
 }
 
+resource "aws_s3_bucket" "production" {
+  bucket = "neufische-aws-cohort-deham6-prod"
+
+  tags = {
+    Name        = "neufische-aws-cohort-deham6"
+    Environment = "production"
+  }
+}
+
 resource "aws_instance" "deham6demos1"{
     ami = "ami-012e877411b53f3bd"
     instance_type = "t2.micro"
