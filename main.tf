@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "development" {
     Environment = "development"
   }
 }
-
+/*
 resource "aws_s3_bucket" "production" {
   bucket = "neufische-aws-cohort-deham6-prod"
 
@@ -31,3 +31,4 @@ resource "aws_instance" "deham6demos1"{
         Name = "neufische-aws-cohort-deham6"
     }
 }
+*/
