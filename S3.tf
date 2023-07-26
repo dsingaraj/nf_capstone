@@ -1,8 +1,8 @@
 resource "aws_s3_bucket" "nf-s3-wordpress" {
-  bucket = "nf_s3_wordpress"
+  bucket = "nf-s3-wordpress"
   
   tags = {
-    Name = "nf_s3_wordpress"
+    Name = "nf-s3-wordpress"
   }
 }
 
