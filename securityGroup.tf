@@ -1,7 +1,7 @@
 # Security Groups
 resource "aws_security_group" "nf_sg_http"{
     vpc_id = aws_vpc.nf_vpc.id
-    name = "nf_securityGroup "
+    name = "nf_securityGrouplatest"
     tags = {
         Name = "nf_sg_http"
     }     
