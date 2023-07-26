@@ -26,3 +26,13 @@ resource "aws_security_group_rule" "nf_ingress_https"{
     type = "ingress"
     cidr_blocks = ["0.0.0.0/0"] # <Specify the CIDR> instead of allowing it to public
 }
+
+# Allow Access All (Outbound)
+resource "aws_security_group_rule" "nf_outbound_all"{
+    from_port = 0
+    protocol = "-1"
+    security_group_id = aws_security_group.nf_sg_http.id
+    to_port= 0
+    type = "egress"
+    cidr_blocks = ["0.0.0.0/0"]
+}
