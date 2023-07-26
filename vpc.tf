@@ -67,3 +67,39 @@ resource "aws_subnet" "nf_privatesubnet2"{
             Name = "nf_capstone"
     }
 }
+
+# Internet Gateway - to have Internet traffic in public subnets
+resource "aws_internet_gateway" "nf_IGW"{
+    vpc_id = aws_vpc.nf_vpc.id
+    tags = {
+        Name = "vpc_igw"
+    }
+}
+
+# Routing tables
+
+# Provides a resource to create a VPC routing table
+resource "aws_route_table" "nf_publicRouteTable1"{
+    vpc_id = aws_vpc.nf_vpc.id
+    route{
+        cidr_block = "0.0.0.0/0"
+        gateway_id = aws_internet_gateway.nf_IGW.id
+    }
+    tags = {
+        Name = "nf_publicRoute1"
+    }
+}
+
+# Provides a resource to create an association between a Public Route Table and a Public Subnet
+resource "aws_route_table_association" "nf_publicSubnetAssociation1" {
+    route_table_id = aws_route_table.nf_publicRouteTable1.id
+    subnet_id = aws_subnet.nf_publicsubnet1.id
+    depends_on = [aws_route_table.nf_publicRouteTable1, aws_subnet.nf_publicsubnet1]
+}
+
+# Provides a resource to create an association between a Public Route Table and a Public Subnet
+resource "aws_route_table_association" "nf_publicSubnetAssociation2" {
+    route_table_id = aws_route_table.nf_publicRouteTable1.id
+    subnet_id = aws_subnet.nf_publicsubnet2.id
+    depends_on = [aws_route_table.nf_publicRouteTable1, aws_subnet.nf_publicsubnet2]
+}
