@@ -26,7 +26,7 @@ resource "aws_instance" "nf_webserver"{
     tags = {
         Name = "nf_webserver"
         }
-    user_data              = file("userdata.sh")
+    user_data = file("userdata.sh")
     
     provisioner "local-exec"{
         command = "echo Instance Type=${self.instance_type},Instance ID=${self.id},Public DNS=${self.public_dns},AMI ID=${self.ami} >> allinstancedetails"

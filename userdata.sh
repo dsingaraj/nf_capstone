@@ -24,4 +24,5 @@ sudo sed -i 's/password_here/wppassword/' wp-config.php
 #Enable PHP 8.0 
 sudo amazon-linux-extras enable php8.0 
 #Restart Apache service to apply changes
+sudo yum update -y
 sudo service httpd restart
