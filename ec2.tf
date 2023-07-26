@@ -17,7 +17,8 @@ data "aws_ami" "nf_latest_linux_ami" {
 
 ###Create EC2
 resource "aws_instance" "nf_webserver"{
-    ami                    = data.aws_ami.nf_latest_linux_ami.id
+    #ami                    = data.aws_ami.nf_latest_linux_ami.id
+    ami = "ami-08541bb85074a743a"
     instance_type          = "t2.micro"
     key_name               = "vockey"
     vpc_security_group_ids = [aws_security_group.nf_sg_http.id]
