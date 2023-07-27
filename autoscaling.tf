@@ -3,7 +3,7 @@ resource "aws_launch_template" "nf-launch-template" {
   #image_id                         = data.aws_ami.amzLinux.id
   image_id                          = "ami-08541bb85074a743a"
   instance_type                     = "t2.micro"
-  vpc_security_group_ids            = [aws_security_group.nf_sg_http.id]
+  vpc_security_group_ids            = [aws_security_group.nf-autoscaling-sg.id]
   user_data                         = filebase64("CPUstresstest.sh")
   tag_specifications {
         resource_type = "instance"
@@ -17,7 +17,7 @@ resource "aws_autoscaling_group" "nf-auto-scaling-grp" {
   max_size                          = 4
   min_size                          = 2
   desired_capacity                  = 2
-  vpc_zone_identifier               = [aws_subnet.nf_publicsubnet1.id, aws_subnet.nf_publicsubnet2.id]
+  vpc_zone_identifier               = [aws_subnet.nf_privatesubnet1.id, aws_subnet.nf_privatesubnet2.id]
   target_group_arns                 = [aws_lb_target_group.target-group.arn]
   health_check_type                 = "ELB"
   health_check_grace_period         = 300

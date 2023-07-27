@@ -24,26 +24,3 @@ resource "aws_lb_listener" "listener" {
     target_group_arn                = aws_lb_target_group.target-group.arn
   }
 }
-resource "aws_security_group" "nf-alb-sg"{
-        vpc_id                      = aws_vpc.nf_vpc.id
-        name                        = "alb-sg"
-        tags = {
-            Name = "alb-sg"
-        }
-    }
-    resource "aws_security_group_rule" "alb-sg-http-in"{
-        from_port                   = 80
-        protocol                    = "tcp"
-        security_group_id           = aws_security_group.nf-alb-sg.id
-        to_port                     = 80
-        type                        = "ingress"
-        cidr_blocks                 = ["0.0.0.0/0"]
-    }
-    resource "aws_security_group_rule" "alb-sg-tcp-out"{
-        from_port                   = 0
-        protocol                    = "all"
-        security_group_id           = aws_security_group.nf-alb-sg.id
-        to_port                     = 65535
-        type                        = "egress"
-        cidr_blocks                 = ["0.0.0.0/0"]
-    }
