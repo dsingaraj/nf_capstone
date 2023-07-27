@@ -1,3 +1,13 @@
 vars.tf
 .terraform/providers/registry.terraform.io/hashicorp/aws/5.9.0/windows_amd64/terraform-provider-aws_v5.9.0_x5.exe
 .terraform.lock.hcl
+.terraform.lock.hcl
+.terraform
+*.out
+terraform.tfstate
+# Local .terraform directories
+**/.terraform/*
+# .tfstate files
+*.tfstate
+*.tfstate.*
+*.terraform (
