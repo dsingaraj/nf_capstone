@@ -46,3 +46,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 apply.txt
+.DS_Store
