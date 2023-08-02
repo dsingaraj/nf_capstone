@@ -10,7 +10,7 @@ resource "aws_vpc" "nf_vpc"{
     tags = {
         Name = "nf_vpc"
     }
-     provisioner "local-exec"{
+    provisioner "local-exec"{
     command = "echo vpc ID=${self.id} >> metadata"
   }
 }
@@ -20,7 +20,7 @@ resource "aws_vpc" "nf_vpc"{
 
 data "aws_availability_zones" "nf_vpc_azs"{}
 
-# Public subnet 1
+# Public Subnet 1
 resource "aws_subnet" "nf_publicsubnet1"{
     cidr_block = "10.0.1.0/24" # 256 IPs
     vpc_id = aws_vpc.nf_vpc.id
@@ -30,6 +30,9 @@ resource "aws_subnet" "nf_publicsubnet1"{
     tags = {
         Name = "nf_capstone_public1"
     }
+    provisioner "local-exec"{
+    command = "echo Public Subnet 1 = ${self.id} >> metadata"
+  }
 }
 
 # Private Subnet 1
@@ -42,9 +45,12 @@ resource "aws_subnet" "nf_privatesubnet1"{
     tags = {
             Name = "nf_capstone_private1"
     }
+    provisioner "local-exec"{
+    command = "echo Private Subnet 1 = ${self.id} >> metadata"
+  }
 }
 
-# Public subnet 2
+# Public Subnet 2
 resource "aws_subnet" "nf_publicsubnet2"{
     cidr_block = "10.0.3.0/24" # 256 IPs
     vpc_id = aws_vpc.nf_vpc.id
@@ -54,6 +60,9 @@ resource "aws_subnet" "nf_publicsubnet2"{
     tags = {
         Name = "nf_capstone_public2"
     }
+    provisioner "local-exec"{
+    command = "echo Public Subnet 2 = ${self.id} >> metadata"
+  }
 }
 
 # Private Subnet 2
@@ -66,6 +75,9 @@ resource "aws_subnet" "nf_privatesubnet2"{
     tags = {
             Name = "nf_capstone_private2"
     }
+    provisioner "local-exec"{
+    command = "echo Private Subnet 2 = ${self.id} >> metadata"
+  }
 }
 
 # Internet Gateway - to have Internet traffic in public subnets
@@ -74,6 +86,9 @@ resource "aws_internet_gateway" "nf_IGW"{
     tags = {
         Name = "vpc_igw"
     }
+    provisioner "local-exec"{
+    command = "echo Internet Gateway = ${self.id} >> metadata"
+  }
 }
 
 # Routing tables
