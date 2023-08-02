@@ -1,31 +1,35 @@
 # Security Groups
 resource "aws_security_group" "nf_sg_bastion"{
-    vpc_id = aws_vpc.nf_vpc.id
-    name = "nf_securityGrouplatest"
-    tags = {
-        Name = "nf_sg_bastion"
-    }     
-}
+        vpc_id = aws_vpc.nf_vpc.id
+        name = "nf_securityGrouplatest"
+        tags = {
+            Name = "nf_sg_bastion"
+        }
+        provisioner "local-exec"{
+        command = "echo Security Group Bastion = ${self.id} >> metadata"
+        }        
+    }
 
-# Ingress Security Port 80 (Inbound)
-resource "aws_security_group_rule" "nf_ingress_http"{
-    from_port = 22
-    protocol = "tcp"
-    security_group_id = aws_security_group.nf_sg_bastion.id
-    to_port= 22
-    type = "ingress"
-    cidr_blocks = ["0.0.0.0/0"] # <Specify the CIDR> instead of allowing it to public
-}
+    # Ingress Security Port 80 (Inbound)
+    resource "aws_security_group_rule" "nf_ingress_http"{
+        from_port = 22
+        protocol = "tcp"
+        security_group_id = aws_security_group.nf_sg_bastion.id
+        to_port= 22
+        type = "ingress"
+        cidr_blocks = ["0.0.0.0/0"] # <Specify the CIDR> instead of allowing it to public
+    }
 
-# Allow Access All (Outbound)
-resource "aws_security_group_rule" "nf_outbound_all"{
-    from_port = 22
-    protocol = "tcp"
-    security_group_id = aws_security_group.nf_sg_bastion.id
-    to_port= 22
-    type = "egress"
-    cidr_blocks = ["0.0.0.0/0"]
-}
+    # Allow Access All (Outbound)
+    resource "aws_security_group_rule" "nf_outbound_all"{
+        from_port = 22
+        protocol = "tcp"
+        security_group_id = aws_security_group.nf_sg_bastion.id
+        to_port= 22
+        type = "egress"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
 # Security Group for Loadbalancer
 resource "aws_security_group" "nf-alb-sg"{
         vpc_id                      = aws_vpc.nf_vpc.id
@@ -33,6 +37,9 @@ resource "aws_security_group" "nf-alb-sg"{
         tags = {
             Name = "alb-sg"
         }
+        provisioner "local-exec"{
+        command = "echo Security Group ALB = ${self.id} >> metadata"
+        }  
     }
     resource "aws_security_group_rule" "alb-sg-http-in"{
         from_port                   = 80
@@ -58,6 +65,7 @@ resource "aws_security_group" "nf-alb-sg"{
         type                        = "egress"
         cidr_blocks                 = ["0.0.0.0/0"]
     }
+
 # Autoscaling Security Group
 resource "aws_security_group" "nf-autoscaling-sg"{
         vpc_id                      = aws_vpc.nf_vpc.id
@@ -65,6 +73,9 @@ resource "aws_security_group" "nf-autoscaling-sg"{
         tags = {
             Name = "autoscaling-sg"
         }
+        provisioner "local-exec"{
+        command = "echo Security Group Autoscaling = ${self.id} >> metadata"
+        }  
     }
     resource "aws_security_group_rule" "autoscaling-sg-ssh-in"{
         from_port                   = 22
@@ -99,12 +110,17 @@ resource "aws_security_group" "nf-autoscaling-sg"{
         type                        = "egress"
         cidr_blocks                 = ["0.0.0.0/0"]
     }
+
+# MYSQL Security Group
 resource "aws_security_group" "nf-mysqldb-sg"{
         vpc_id                      = aws_vpc.nf_vpc.id
         name                        = "nf-mysqldb-sg"
         tags = {
             Name = "nf-mysqldb-sg"
         }
+        provisioner "local-exec"{
+        command = "echo Security Group MYSQL = ${self.id} >> metadata"
+        }  
     }
     resource "aws_security_group_rule" "mysql-sg-bastion-in"{
         from_port                   = 3306
