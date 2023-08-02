@@ -82,6 +82,15 @@ resource "aws_security_group" "nf-autoscaling-sg"{
         type                        = "ingress"
         cidr_blocks                 = ["0.0.0.0/0"]
     }
+    resource "aws_security_group_rule" "autoscaling-sg-mysql-in"{
+        from_port                   = 3306
+        protocol                    = "tcp"
+        security_group_id           = aws_security_group.nf-autoscaling-sg.id
+        to_port                     = 3306
+        type                        = "ingress"
+        source_security_group_id    = aws_security_group.nf-mysqldb-sg.id
+    }
+
     resource "aws_security_group_rule" "autoscaling-sg-all-out"{
         from_port                   = 0
         protocol                    = "all"
@@ -89,4 +98,35 @@ resource "aws_security_group" "nf-autoscaling-sg"{
         to_port                     = 65535
         type                        = "egress"
         cidr_blocks                 = ["0.0.0.0/0"]
+    }
+resource "aws_security_group" "nf-mysqldb-sg"{
+        vpc_id                      = aws_vpc.nf_vpc.id
+        name                        = "nf-mysqldb-sg"
+        tags = {
+            Name = "nf-mysqldb-sg"
+        }
+    }
+    resource "aws_security_group_rule" "mysql-sg-bastion-in"{
+        from_port                   = 3306
+        protocol                    = "tcp"
+        security_group_id           = aws_security_group.nf-mysqldb-sg.id
+        to_port                     = 3306
+        type                        = "ingress"
+        source_security_group_id    = aws_security_group.nf_sg_bastion.id
+    }
+    resource "aws_security_group_rule" "mysql-sg-autoscaling-in"{
+        from_port                   = 3306
+        protocol                    = "tcp"
+        security_group_id           = aws_security_group.nf-mysqldb-sg.id
+        to_port                     = 3306
+        type                        = "ingress"
+        source_security_group_id    = aws_security_group.nf-autoscaling-sg.id
+    }
+    resource "aws_security_group_rule" "mysql-sg-autoscaling-out"{
+        from_port                   = 3306
+        protocol                    = "tcp"
+        security_group_id           = aws_security_group.nf-mysqldb-sg.id
+        to_port                     = 3306
+        type                        = "egress"
+        source_security_group_id    = aws_security_group.nf-autoscaling-sg.id
     }

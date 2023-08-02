@@ -107,25 +107,25 @@ resource "aws_route_table_association" "nf_publicSubnetAssociation2" {
 # Adding NAT Gatway
 # Create Elastic IP. The advantage of associating the Elastic IP address with the network interface instead of directly with the instance is that you can move all the attributes of the network interface from one instance to another in a single step.
 
-resource "aws_eip" "nf_ip" {
-    domain = "vpc"
-#   vpc = true
-    tags = {
-    Name = "nf_elastic_ip"
-  }
-}
+#resource "aws_eip" "nf_ip" {
+#    domain = "vpc"
+##   vpc = true
+#    tags = {
+#    Name = "nf_elastic_ip"
+#  }
+#}
 
 # NAT Gateway in public subnet and assigned the above created Elastic IP to it .
 
-resource "aws_nat_gateway" "nf_NatGateway" {
-  allocation_id = "${aws_eip.nf_ip.id}"
-  subnet_id     = "${aws_subnet.nf_publicsubnet1.id}"
-
-
-  tags = {
-    Name = "nf_NatGateway"
-  }
-}
+#resource "aws_nat_gateway" "nf_NatGateway" {
+#  allocation_id = "${aws_eip.nf_ip.id}"
+#  subnet_id     = "${aws_subnet.nf_publicsubnet1.id}"
+#
+#
+#  tags = {
+#    Name = "nf_NatGateway"
+#  }
+#}
 
 #Create a Route Table in order to connect our private subnet to the NAT Gateway .
 
@@ -133,10 +133,10 @@ resource "aws_route_table" "nf_privateRouteTable1" {
   vpc_id = "${aws_vpc.nf_vpc.id}"
 
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_nat_gateway.nf_NatGateway.id}"
-  }
+#  route {
+#    cidr_block = "0.0.0.0/0"
+#    gateway_id = "${aws_nat_gateway.nf_NatGateway.id}"
+#  }
 
   tags = {
     Name = "nf_privateRoute1"

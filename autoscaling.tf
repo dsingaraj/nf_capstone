@@ -1,14 +1,35 @@
+data "aws_ami" "amzLinux" {
+    most_recent                 = true
+    owners                      = ["amazon"]
+    
+    filter {
+        name    = "name"
+        values  = ["al2023-ami-2023*x86_64"]
+        }
+}
+ locals {
+        DB      ="mydb"
+        User    ="Admin"
+        PW      ="password123"
+        host    =aws_db_instance.nf-mysql-db.address
+
+}
 resource "aws_launch_template" "nf-launch-template" {
   name                              = "webserver-launch-template"
-  #image_id                         = data.aws_ami.amzLinux.id
-  image_id                          = "ami-08541bb85074a743a"
+  image_id                          = data.aws_ami.amzLinux.id
   instance_type                     = "t2.micro"
   vpc_security_group_ids            = [aws_security_group.nf-autoscaling-sg.id]
-  user_data                         = filebase64("CPUstresstest.sh")
+    user_data                         = base64encode(templatefile("new-user-data.sh",{
+        DB      = local.DB
+        User    = local.User
+        PW      = local.PW
+        host    = local.host
+    }))
+      depends_on = [ aws_db_instance.nf-mysql-db ]
   tag_specifications {
         resource_type = "instance"
         tags          = {
-            Name      = "autoserver"
+            Name      = "wp-server"
    }
   }
 }
@@ -17,7 +38,8 @@ resource "aws_autoscaling_group" "nf-auto-scaling-grp" {
   max_size                          = 4
   min_size                          = 2
   desired_capacity                  = 2
-  vpc_zone_identifier               = [aws_subnet.nf_privatesubnet1.id, aws_subnet.nf_privatesubnet2.id]
+  # Changed to public subnet
+  vpc_zone_identifier               = [aws_subnet.nf_publicsubnet1.id, aws_subnet.nf_publicsubnet2.id]
   target_group_arns                 = [aws_lb_target_group.target-group.arn]
   health_check_type                 = "ELB"
   health_check_grace_period         = 300
