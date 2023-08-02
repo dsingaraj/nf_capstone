@@ -7,14 +7,14 @@ data "aws_ami" "amzLinux" {
         values  = ["al2023-ami-2023*x86_64"]
         }
 }
- locals {
+locals {
         DB      ="mydb"
         User    ="Admin"
         PW      ="password123"
         host    =aws_db_instance.nf-mysql-db.address
-
 }
 resource "aws_launch_template" "nf-launch-template" {
+  depends_on = [ aws_db_instance.nf-mysql-db ]
   name                              = "webserver-launch-template"
   image_id                          = data.aws_ami.amzLinux.id
   instance_type                     = "t2.micro"
@@ -25,7 +25,9 @@ resource "aws_launch_template" "nf-launch-template" {
         PW      = local.PW
         host    = local.host
     }))
-      depends_on = [ aws_db_instance.nf-mysql-db ]
+  iam_instance_profile {
+    name =  "LabInstanceProfile"
+  }
   tag_specifications {
         resource_type = "instance"
         tags          = {
